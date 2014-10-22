@@ -5,7 +5,7 @@ function User(user) {
   this.name = user.name;
   this.password = user.password;
   this.email = user.email;
-};
+}
 
 User.prototype.save = function(callback) {
   var user = {
@@ -33,7 +33,7 @@ User.prototype.save = function(callback) {
           return callback(err);
         }
         callback(null, user[0]);
-      })
+      });
 
     });
   });
