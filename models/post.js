@@ -1,5 +1,6 @@
 var mongodb = require('./db');
 var moment = require('moment');
+var markdown = require('markdown').markdown;
 
 //Set up User Object
 function Post(post) {
@@ -69,6 +70,9 @@ Post.get = function(name, callback) {
         if (err) {
           callback(err);
         }
+        docs.forEach(function(doc) {
+          doc.content = markdown.toHTML(doc.content);
+        });
         callback(null, docs);
       });
     });

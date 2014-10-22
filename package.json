@@ -11,6 +11,7 @@
     "ejs": "*",
     "express": "3.18.0",
     "moment": "^2.8.3",
-    "mongodb": "*"
+    "mongodb": "*",
+    "markdown": "*"
   }
 }

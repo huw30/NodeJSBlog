@@ -2,6 +2,7 @@
   routes index
 */
 var crypto = require('crypto');
+var fs = require('fs');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 
@@ -136,6 +137,21 @@ module.exports = function(app) {
     req.session.user = null;
     req.flash('success', 'Logout successful!');
     res.redirect('/');
+  });
+
+  app.get('/upload', checkNotLogin);
+  app.get('/upload', function(req, res) {
+    res.render('upload', {
+      title: 'Upload Images',
+      user: req.session.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
+    });
+  });
+
+  app.post('/upload', checkNotLogin);
+  app.post('/upload', function(req, res) {
+    
   });
   //check whether the user is logged out
   function checkNotLogin(req, res, next) {
