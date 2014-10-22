@@ -2,8 +2,8 @@
 
 ####Server interface
 
-/ --main page
-/login 
-/register --user registration
-/post --add new post
-/logout
+`/ ` --main page  
+`/login` 
+`/register` --user registration 
+`/post` --add new post 
+`/logout`
