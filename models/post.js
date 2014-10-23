@@ -2,6 +2,8 @@ var mongodb = require('./db');
 var moment = require('moment');
 var markdown = require('markdown').markdown;
 
+//don't forget to close db.
+
 //Set up User Object
 function Post(post) {
   this.name = post.name;
@@ -48,7 +50,7 @@ Post.prototype.save = function(callback) {
   });
 };
 
-Post.get = function(name, callback) {
+Post.getAll = function(name, callback) {
   mongodb.open(function(err, db) {
     if (err) {
       callback(err);
@@ -74,6 +76,32 @@ Post.get = function(name, callback) {
           doc.content = markdown.toHTML(doc.content);
         });
         callback(null, docs);
+      });
+    });
+  });
+};
+
+Post.getOne = function(name, title, day, callback) {
+  mongodb.open(function(err, db) {
+    if (err) {
+      callback(err);
+    }
+
+    db.collection('posts', function(err, collection) {
+      if (err) {
+        callback(err);
+      }
+      collection.findOne({
+        "name": name,
+        "title": title,
+        "time.day": day
+      }, function(err, post) {
+        mongodb.close();
+        if (err) {
+          callback(err);
+        }
+        post.content = markdown.toHTML(post.content);
+        callback(null, post);
       });
     });
   });

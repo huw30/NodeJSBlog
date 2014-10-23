@@ -8,7 +8,7 @@ var Post = require('../models/post.js');
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
-    Post.get(null, function(err, posts) {
+    Post.getAll(null, function(err, posts) {
       if (err) {
         posts = [];
       }
@@ -151,8 +151,55 @@ module.exports = function(app) {
 
   app.post('/upload', checkNotLogin);
   app.post('/upload', function(req, res) {
-    
+    for(var i in req.files) {
+      if(req.files[i].size != 0) {
+        var path = './public/images/' + req.files[i].name;
+        fs.renameSync(req.files[i].path, path);
+      } else {
+        fs.unlinkSync(req.files[i].path);
+      }
+      req.flash('success', 'Upload successfully!');
+      res.redirect('/upload');
+    }
   });
+
+  app.get('/u/:name', function(req, res) {
+    User.get(req.params.name, function(err, user) {
+      if (!user) {
+        req.flash('error', 'User not exits!');
+        return res.redirect('back');
+      }
+      Post.getAll(user.name, function(err, posts) {
+        res.render('user', {
+          title: 'User ' + user.name,
+          posts: posts,
+          user: req.session.user,
+          success: req.flash('success').toString(),
+          error: req.flash('error').toString()
+        });
+      });
+    });
+  });
+
+  app.get('/u/:name/:title/:day', function(req, res) {
+    User.get(req.params.name, function(err, user) {
+      if (!user) {
+        req.flash('error', 'User not exits!');
+        return res.redirect('back');
+      }
+      Post.getOne(user.name, req.params.title, req.params.day, function(err, post) {
+        res.render('article', {
+          title: post.title,
+          post: post,
+          user: req.session.user,
+          success: req.flash('success').toString(),
+          error: req.flash('error').toString()
+        });
+      });
+    });
+  });
+
+
   //check whether the user is logged out
   function checkNotLogin(req, res, next) {
     if (!req.session.user) {
