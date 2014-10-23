@@ -182,23 +182,68 @@ module.exports = function(app) {
   });
 
   app.get('/u/:name/:title/:day', function(req, res) {
-    User.get(req.params.name, function(err, user) {
-      if (!user) {
-        req.flash('error', 'User not exits!');
-        return res.redirect('back');
+    Post.getOne(req.params.name, req.params.title, req.params.day, false,function(err, post) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect('/');
       }
-      Post.getOne(user.name, req.params.title, req.params.day, function(err, post) {
-        res.render('article', {
-          title: post.title,
-          post: post,
-          user: req.session.user,
-          success: req.flash('success').toString(),
-          error: req.flash('error').toString()
-        });
+      res.render('article', {
+        title: post.title,
+        post: post,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
       });
     });
   });
 
+  app.get('/edit/:name/:title/:day', checkNotLogin);
+  app.get('/edit/:name/:title/:day', function(req, res) {
+    var currentUser = req.session.user;
+    Post.getOne(currentUser.name, req.params.title, req.params.day, true,function(err, post) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect('back');
+      }
+      res.render('edit', {
+        title: post.title,
+        post: post,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
+    });
+  });
+
+  app.post('/edit/:name/:title/:day', checkNotLogin);
+  app.post('/edit/:name/:title/:day', function(req, res) {
+    var currentUser = req.session.user;
+    var title = req.params.title;
+    var newTitle = req.body.title;
+    Post.update(currentUser.name, title, newTitle, req.params.day, req.body.content, function(err) {
+      var returnUrl = "/u/" + currentUser.name + "/" + title + "/" + req.params.day;
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect(returnUrl); //redirect to article page
+      }
+      returnUrl = "/u/" + currentUser.name + "/" + newTitle + "/" + req.params.day;
+      req.flash('success', 'Update successfully!');
+      res.redirect(returnUrl);
+    });
+  });
+
+  app.get('/remove/:name/:title/:day', checkNotLogin);
+  app.get('/remove/:name/:title/:day', function(req, res) {
+    var currentUser = req.session.user;
+    Post.remove(currentUser.name, req.params.title, req.params.day, function(err) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect(back); //redirect to article page
+      }
+      req.flash('success', 'Remove successfully!');
+      res.redirect('/');
+    });
+  });
 
   //check whether the user is logged out
   function checkNotLogin(req, res, next) {

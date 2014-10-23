@@ -81,7 +81,7 @@ Post.getAll = function(name, callback) {
   });
 };
 
-Post.getOne = function(name, title, day, callback) {
+Post.getOne = function(name, title, day, isMd, callback) {
   mongodb.open(function(err, db) {
     if (err) {
       callback(err);
@@ -100,8 +100,67 @@ Post.getOne = function(name, title, day, callback) {
         if (err) {
           callback(err);
         }
-        post.content = markdown.toHTML(post.content);
+        if (!isMd) { //check whether need markdown or html
+          post.content = markdown.toHTML(post.content);
+        }
         callback(null, post);
+      });
+    });
+  });
+};
+
+Post.update = function(name, title, newTitle, day, content, callback) {
+  mongodb.open(function(err, db) {
+    if (err) {
+      callback(err);
+    }
+    db.collection('posts',function(err, collection) {
+      if (err) {
+        mongodb.close();
+        callback(err);
+      }
+      collection.update({
+        "name" : name,
+        "title" : title,
+        "time.day" : day,
+      }, {
+        $set: {
+          title: newTitle,
+          content: content
+        }
+      }, function(err) {
+        mongodb.close();
+        if (err) {
+          callback(err);
+        }
+        callback(null);
+      });
+    });
+  });
+};
+
+Post.remove = function(name, title, day, callback) {
+  mongodb.open(function(err, db) {
+    if (err) {
+      callback(err);
+    }
+
+    db.collection('posts', function(err, collection) {
+      if (err) {
+        callback(err);
+      }
+      collection.remove({
+        "name": name,
+        "title": title,
+        "time.day": day
+      }, {
+         w : 1
+      }, function(err) {
+        mongodb.close();
+        if (err) {
+          callback(err);
+        }
+        callback(null);
       });
     });
   });
