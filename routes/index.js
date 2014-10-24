@@ -6,16 +6,21 @@ var fs = require('fs');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var Comment = require('../models/comment.js');
+var moment = require('moment');
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
-    Post.getAll(null, function(err, posts) {
+    var page = req.query.p ? parseInt(req.query.p) : 1;
+    Post.getTen(null, page, function(err, posts, total) {
       if (err) {
         posts = [];
       }
       res.render('index', {
         title: 'Home',
         posts: posts,
+        page: page,
+        isFirstPage: (page - 1) == 0,
+        isLastPage: ((page - 1) * 10 + posts.length) == total,
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
@@ -165,15 +170,23 @@ module.exports = function(app) {
   });
 
   app.get('/u/:name', function(req, res) {
+    var page = req.query.p ? parseInt(req.query.p) : 1;
     User.get(req.params.name, function(err, user) {
       if (!user) {
         req.flash('error', 'User not exits!');
         return res.redirect('back');
       }
-      Post.getAll(user.name, function(err, posts) {
+      Post.getTen(user.name, page, function(err, posts, total) {
+        if (err) {
+          posts = [];
+          total = [];
+        }
         res.render('user', {
           title: 'User ' + user.name,
           posts: posts,
+          page: page,
+          isFirstPage: (page - 1) == 0,
+          isLastPage: ((page - 1) * 10 + posts.length) == total,
           user: req.session.user,
           success: req.flash('success').toString(),
           error: req.flash('error').toString()
@@ -201,12 +214,23 @@ module.exports = function(app) {
 
   app.post('/u/:name/:title/:day', checkNotLogin);
   app.post('/u/:name/:title/:day', function(req, res) {
-    // var name = req.body.name,
-    //     title = req.body.title,
-    //     day = req.body.day,
-    //     comment = req.body.comment;
-    // var newComment = new Comment(name, day, title, comment);
-
+    var date = new Date(),
+        time = moment(date).format('YYYY-MM-DD HH:mm');
+    var comment = {
+      name: req.body.name,
+      title: req.body.title,
+      content: req.body.content,
+      time: time
+    }
+    var newComment = new Comment(req.body.day, req.body.title, comment);
+    newComment.save(function(err) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect('back');
+      }
+      req.flash('success', 'Comment successfully!');
+      res.redirect('back');
+    });
   });
 
 
