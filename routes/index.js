@@ -5,6 +5,7 @@ var crypto = require('crypto');
 var fs = require('fs');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
+var Comment = require('../models/comment.js');
 
 module.exports = function(app) {
   app.get('/', function(req, res) {
@@ -181,6 +182,7 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/u/:name/:title/:day', checkNotLogin);
   app.get('/u/:name/:title/:day', function(req, res) {
     Post.getOne(req.params.name, req.params.title, req.params.day, false,function(err, post) {
       if (err) {
@@ -196,6 +198,17 @@ module.exports = function(app) {
       });
     });
   });
+
+  app.post('/u/:name/:title/:day', checkNotLogin);
+  app.post('/u/:name/:title/:day', function(req, res) {
+    // var name = req.body.name,
+    //     title = req.body.title,
+    //     day = req.body.day,
+    //     comment = req.body.comment;
+    // var newComment = new Comment(name, day, title, comment);
+
+  });
+
 
   app.get('/edit/:name/:title/:day', checkNotLogin);
   app.get('/edit/:name/:title/:day', function(req, res) {

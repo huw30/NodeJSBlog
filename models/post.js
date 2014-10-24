@@ -4,7 +4,7 @@ var markdown = require('markdown').markdown;
 
 //don't forget to close db.
 
-//Set up User Object
+//Set up Post Object
 function Post(post) {
   this.name = post.name;
   this.title = post.title;
@@ -24,7 +24,8 @@ Post.prototype.save = function(callback) {
     name: this.name,
     title: this.title,
     content: this.content,
-    time: time
+    time: time,
+    comments:[]
   };
 
   mongodb.open(function(err, db) {
@@ -67,15 +68,21 @@ Post.getAll = function(name, callback) {
       }
       collection.find(query).sort({
         time: -1
-      }).toArray(function(err, docs) {
+      }).toArray(function(err, posts) {
         mongodb.close();
         if (err) {
           callback(err);
         }
-        docs.forEach(function(doc) {
-          doc.content = markdown.toHTML(doc.content);
+        posts.forEach(function(post) {
+          post.content = markdown.toHTML(post.content);
+          console.log(post.comments);
+          if(post.comments.length > 0) {
+            post.comments.forEach(function(comment) {
+              comment = markdown.toHTML(comment);
+            });
+          }
         });
-        callback(null, docs);
+        callback(null, posts);
       });
     });
   });
@@ -100,8 +107,13 @@ Post.getOne = function(name, title, day, isMd, callback) {
         if (err) {
           callback(err);
         }
-        if (!isMd) { //check whether need markdown or html
+        if (!isMd && post) { //check whether need markdown or html
           post.content = markdown.toHTML(post.content);
+        }
+        if(post.comments.length > 0 && post) {
+          post.comments.forEach(function(comment) {
+            comment = markdown.toHTML(comment);
+          });
         }
         callback(null, post);
       });

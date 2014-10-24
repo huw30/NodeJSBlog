@@ -1,0 +1,7 @@
+<form method="post">
+	<input type="hidden" name="name" value="<%= user.name%>" />
+	<input type="hidden" name="title" value="<%= post.title%>" />
+	<input type="hidden" name="day" value="<%= post.time.day%>" />
+	<textarea name="comment" cols="100" rows="10"></textarea>
+	<input type="submit" value="Comment" />
+</form>
