@@ -339,6 +339,10 @@ module.exports = function(app) {
     });
   });
 
+  app.use(function (req, res) {
+    res.render(404);
+  });
+
   //check whether the user is logged out
   function checkNotLogin(req, res, next) {
     if (!req.session.user) {
