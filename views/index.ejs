@@ -1,4 +1,8 @@
 <%- include header%>
+<form method="get" action="/search">
+	<input type="text" name="search" class="search"/>
+	<input type="submit" value="Search" />
+</form>
 <% posts.forEach(function(post, index) { %>
 	<p><h2><a href="/u/<%= post.name %>/<%= post.title%>/<%= post.time.day %>?view=true"><%= post.title %></a></h2></p>
 	<p class="info">

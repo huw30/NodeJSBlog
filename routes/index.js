@@ -175,6 +175,25 @@ module.exports = function(app) {
     });
   });
 
+  app.get('/search', checkNotLogin);
+  app.get('/search', function (req, res) {
+    Post.search(req.query.search)
+    .then(function(posts) {
+      res.render('search', {
+        title: 'Search For:' + req.query.search,
+        posts: posts,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
+    })
+    .fail(function(err) {
+      req.flash('error',err); 
+      return res.redirect('/');
+    });
+  });
+  
+
   app.get('/logout', checkNotLogin);
   app.get('/logout', function(req, res) {
     req.session.user = null;

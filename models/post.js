@@ -249,7 +249,36 @@ Post.getArticlesForTag = function(tag) {
     });
   });
   return deferred.promise();
-}
+};
+
+Post.search = function(searchText) {
+  var deferred = vow.defer();
+  var pattern = new RegExp("^.*" + searchText + ".*$", "i");
+  mongodb.open(function (err, db) {
+    if (err) {
+      mongodb.close();
+      deferred.reject(err);
+    }
+    db.collection('posts', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        deferred.reject(err);
+      }
+      collection.find({
+        "title" : pattern
+      }).sort({
+        time: -1
+      }).toArray(function (err, posts) {
+        mongodb.close();
+        if (err) {
+          deferred.reject(err);
+        }
+        deferred.resolve(posts);
+      });
+    });
+  });
+  return deferred.promise();
+};
 
 module.exports = Post;
 
