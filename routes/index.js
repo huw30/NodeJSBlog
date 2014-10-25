@@ -122,10 +122,12 @@ module.exports = function(app) {
   app.post('/post', checkNotLogin);
   app.post('/post', function(req, res) {
     var currentUser = req.session.user;
+    var tags = [req.body.tag1, req.body.tag2, req.body.tag3];
     var newPost = new Post({
       name: currentUser.name,
       title: req.body.title,
-      content: req.body.content
+      content: req.body.content,
+      tags: tags
     });
 
     newPost.save(function(err, user) {
@@ -137,7 +139,42 @@ module.exports = function(app) {
       res.redirect('/');
     });
   });
-  
+
+  app.get('/tags', checkNotLogin);
+  app.get('/tags', function (req, res) {
+    Post.getTags(function (err, tags) {
+      if (err) {
+        req.flash('error', err); 
+        return res.redirect('/');
+      }
+      res.render('tags', {
+        title: 'Tags',
+        tags: tags,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
+    });
+  });
+
+  app.get('/tags', checkNotLogin);
+  app.get('/tags/:tag', function (req, res) {
+    Post.getArticlesForTag(req.params.tag)
+    .then(function(posts) {
+      res.render('tag', {
+        title: 'TAG:' + req.params.tag,
+        posts: posts,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+      });
+    })
+    .fail(function(err) {
+      req.flash('error',err); 
+      return res.redirect('/');
+    });
+  });
+
   app.get('/logout', checkNotLogin);
   app.get('/logout', function(req, res) {
     req.session.user = null;
@@ -197,7 +234,7 @@ module.exports = function(app) {
 
   app.get('/u/:name/:title/:day', checkNotLogin);
   app.get('/u/:name/:title/:day', function(req, res) {
-    Post.getOne(req.params.name, req.params.title, req.params.day, false,function(err, post) {
+    Post.getOne(req.params.name, req.params.title, req.params.day, false, function(err, post) {
       if (err) {
         req.flash('error', err); 
         return res.redirect('/');
@@ -257,7 +294,8 @@ module.exports = function(app) {
     var currentUser = req.session.user;
     var title = req.params.title;
     var newTitle = req.body.title;
-    Post.update(currentUser.name, title, newTitle, req.params.day, req.body.content, function(err) {
+    var tags = [req.body.tag1, req.body.tag2, req.body.tag3];
+    Post.update(currentUser.name, title, newTitle, req.params.day, tags, req.body.content, function(err) {
       var returnUrl = "/u/" + currentUser.name + "/" + title + "/" + req.params.day;
       if (err) {
         req.flash('error', err); 

@@ -1,6 +1,7 @@
 var mongodb = require('./db');
 var moment = require('moment');
 var markdown = require('markdown').markdown;
+var vow = require('vow');
 
 //don't forget to close db.
 
@@ -9,6 +10,7 @@ function Post(post) {
   this.name = post.name;
   this.title = post.title;
   this.content = post.content;
+  this.tags = post.tags;
 }
 
 Post.prototype.save = function(callback) {
@@ -25,7 +27,9 @@ Post.prototype.save = function(callback) {
     title: this.title,
     content: this.content,
     time: time,
-    comments:[]
+    tags: this.tags,
+    comments:[],
+    viewsCount: 0
   };
 
   mongodb.open(function(err, db) {
@@ -98,7 +102,6 @@ Post.getOne = function(name, title, day, isMd, callback) {
     if (err) {
       return callback(err);
     }
-
     db.collection('posts', function(err, collection) {
       if (err) {
         return callback(err);
@@ -108,9 +111,24 @@ Post.getOne = function(name, title, day, isMd, callback) {
         "title": title,
         "time.day": day
       }, function(err, post) {
-        mongodb.close();
         if (err) {
+          mongodb.close();
           return callback(err);
+        }
+
+        if (post) {
+          collection.update({
+            "name": name,
+            "time.day": day,
+            "title": title
+          }, {
+            $inc: {"viewsCount": 1}
+          }, function(err) {
+            mongodb.close();
+            if (err) {
+              return callback(err);
+            }
+          });
         }
         if (!isMd && post) { //check whether need markdown or html
           post.content = markdown.toHTML(post.content);
@@ -126,7 +144,7 @@ Post.getOne = function(name, title, day, isMd, callback) {
   });
 };
 
-Post.update = function(name, title, newTitle, day, content, callback) {
+Post.update = function(name, title, newTitle, day, tags, content, callback) {
   mongodb.open(function(err, db) {
     if (err) {
       return callback(err);
@@ -143,7 +161,8 @@ Post.update = function(name, title, newTitle, day, content, callback) {
       }, {
         $set: {
           title: newTitle,
-          content: content
+          content: content,
+          tags: tags
         }
       }, function(err) {
         mongodb.close();
@@ -182,6 +201,55 @@ Post.remove = function(name, title, day, callback) {
     });
   });
 };
+
+Post.getTags = function(callback) {
+  mongodb.open(function (err, db) {
+    if (err) {
+      return callback(err);
+    }
+    db.collection('posts', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        return callback(err);
+      }
+      collection.distinct("tags", function (err, tags) {
+        mongodb.close();
+        if (err) {
+          return callback(err);
+        }
+        callback(null, tags);
+      });
+    });
+  });
+};
+
+Post.getArticlesForTag = function(tag) {
+  var deferred = vow.defer();
+
+  mongodb.open(function (err, db) {
+    if (err) {
+      deferred.reject(err);
+    }
+    db.collection('posts', function (err, collection) {
+      if (err) {
+        mongodb.close();
+        deferred.reject(err);
+      }
+      collection.find({
+        "tags" : tag
+      }).sort({
+        time: -1
+      }).toArray(function (err, posts) {
+        mongodb.close();
+        if (err) {
+          deferred.reject(err);
+        }
+        deferred.resolve(posts);
+      });
+    });
+  });
+  return deferred.promise();
+}
 
 module.exports = Post;
 
