@@ -1,6 +1,12 @@
 <%- include header%>
 <% posts.forEach(function(post, index) { %>
-	<p><h2><a href="/u/<%= post.name %>/<%= post.title%>/<%= post.time.day %>?view=true"><%= post.title %></a></h2></p>
+	<p>
+		<h2>
+			<a href="/u/<%= post.name %>/<%= post.title%>/<%= post.time.day %>?view=true"><%= post.title %>
+			</a>
+		</h2>
+		<a href="/u/<%= post.name %>"><img src="<%= post.avatar %>" class="p-avatar" /></a>
+	</p>
 	<p class="info">
 		Author: <a href="/u/<%= post.name %>"><%= post.name %></a> |
 		Date: <%= post.time.minute %>
@@ -12,5 +18,7 @@
 	</p>
 	<p><%- post.content%></p>
 <% }); %>
-<%- include paging %>
+<% if (posts.length > 0) {%>
+	<%- include paging %>
+<% } %>
 <%- include footer%>

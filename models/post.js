@@ -1,7 +1,8 @@
-var mongodb = require('./db');
+var mongodb = require('mongodb').Db;
 var moment = require('moment');
 var markdown = require('markdown').markdown;
 var vow = require('vow');
+var settings = require('../settings');
 
 //don't forget to close db.
 
@@ -11,6 +12,7 @@ function Post(post) {
   this.title = post.title;
   this.content = post.content;
   this.tags = post.tags;
+  this.avatar = post.avatar;
 }
 
 Post.prototype.save = function(callback) {
@@ -24,6 +26,7 @@ Post.prototype.save = function(callback) {
   };
   var post = {
     name: this.name,
+    avatar: this.avatar,
     title: this.title,
     content: this.content,
     time: time,
@@ -32,19 +35,19 @@ Post.prototype.save = function(callback) {
     viewsCount: 0
   };
 
-  mongodb.open(function(err, db) {
+  mongodb.connect(settings.url, function(err, db) {
     if (err) {
       callback(err);
     }
     db.collection('posts',function(err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       collection.insert(post, {
         safe: true
       }, function(err, post) {
-        mongodb.close();
+        db.close();
         if (err) {
           return callback(err);
         }
@@ -55,14 +58,14 @@ Post.prototype.save = function(callback) {
 };
 
 Post.getTen = function(name, page, callback) {
-  mongodb.open(function(err, db) {
+  mongodb.connect(settings.url, function(err, db) {
     if (err) {
       return callback(err);
     }
 
     db.collection('posts', function(err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
 
@@ -78,7 +81,7 @@ Post.getTen = function(name, page, callback) {
         }).sort({
           time: -1
         }).toArray(function(err, posts) {
-          mongodb.close();
+          db.close();
           if (err) {
             return callback(err);
           }
@@ -98,7 +101,7 @@ Post.getTen = function(name, page, callback) {
 };
 
 Post.getOne = function(name, title, day, isMd, callback) {
-  mongodb.open(function(err, db) {
+  mongodb.connect(settings.url, function(err, db) {
     if (err) {
       return callback(err);
     }
@@ -112,7 +115,7 @@ Post.getOne = function(name, title, day, isMd, callback) {
         "time.day": day
       }, function(err, post) {
         if (err) {
-          mongodb.close();
+          db.close();
           return callback(err);
         }
 
@@ -124,7 +127,7 @@ Post.getOne = function(name, title, day, isMd, callback) {
           }, {
             $inc: {"viewsCount": 1}
           }, function(err) {
-            mongodb.close();
+            db.close();
             if (err) {
               return callback(err);
             }
@@ -133,7 +136,7 @@ Post.getOne = function(name, title, day, isMd, callback) {
         if (!isMd && post) { //check whether need markdown or html
           post.content = markdown.toHTML(post.content);
         }
-        if(post.comments.length > 0 && post) {
+        if( post && post.comments.length > 0) {
           post.comments.forEach(function(comment) {
             comment.content = markdown.toHTML(comment.content);
           });
@@ -145,13 +148,13 @@ Post.getOne = function(name, title, day, isMd, callback) {
 };
 
 Post.update = function(name, title, newTitle, day, tags, content, callback) {
-  mongodb.open(function(err, db) {
+  mongodb.connect(settings.url, function(err, db) {
     if (err) {
       return callback(err);
     }
     db.collection('posts',function(err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       collection.update({
@@ -165,7 +168,7 @@ Post.update = function(name, title, newTitle, day, tags, content, callback) {
           tags: tags
         }
       }, function(err) {
-        mongodb.close();
+        db.close();
         if (err) {
           return callback(err);
         }
@@ -176,7 +179,7 @@ Post.update = function(name, title, newTitle, day, tags, content, callback) {
 };
 
 Post.remove = function(name, title, day, callback) {
-  mongodb.open(function(err, db) {
+  mongodb.connect(settings.url, function(err, db) {
     if (err) {
       return callback(err);
     }
@@ -192,7 +195,7 @@ Post.remove = function(name, title, day, callback) {
       }, {
          w : 1
       }, function(err) {
-        mongodb.close();
+        db.close();
         if (err) {
           return callback(err);
         }
@@ -203,17 +206,17 @@ Post.remove = function(name, title, day, callback) {
 };
 
 Post.getTags = function(callback) {
-  mongodb.open(function (err, db) {
+  mongodb.connect(settings.url, function (err, db) {
     if (err) {
       return callback(err);
     }
     db.collection('posts', function (err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         return callback(err);
       }
       collection.distinct("tags", function (err, tags) {
-        mongodb.close();
+        db.close();
         if (err) {
           return callback(err);
         }
@@ -226,13 +229,13 @@ Post.getTags = function(callback) {
 Post.getArticlesForTag = function(tag) {
   var deferred = vow.defer();
 
-  mongodb.open(function (err, db) {
+  mongodb.connect(settings.url, function (err, db) {
     if (err) {
       deferred.reject(err);
     }
     db.collection('posts', function (err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         deferred.reject(err);
       }
       collection.find({
@@ -240,7 +243,7 @@ Post.getArticlesForTag = function(tag) {
       }).sort({
         time: -1
       }).toArray(function (err, posts) {
-        mongodb.close();
+        db.close();
         if (err) {
           deferred.reject(err);
         }
@@ -254,14 +257,14 @@ Post.getArticlesForTag = function(tag) {
 Post.search = function(searchText) {
   var deferred = vow.defer();
   var pattern = new RegExp("^.*" + searchText + ".*$", "i");
-  mongodb.open(function (err, db) {
+  mongodb.connect(settings.url, function (err, db) {
     if (err) {
-      mongodb.close();
+      db.close();
       deferred.reject(err);
     }
     db.collection('posts', function (err, collection) {
       if (err) {
-        mongodb.close();
+        db.close();
         deferred.reject(err);
       }
       collection.find({
@@ -269,7 +272,7 @@ Post.search = function(searchText) {
       }).sort({
         time: -1
       }).toArray(function (err, posts) {
-        mongodb.close();
+        db.close();
         if (err) {
           deferred.reject(err);
         }

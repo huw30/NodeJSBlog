@@ -18,6 +18,8 @@
 
 <p>Views: <%= post.viewsCount%> | Comments: <%= post.comments.length%></p>
 
-<%- include comment%>
+<% if (user) { %>
+	<%- include comment%>
+<% } %>
 
 <%- include footer%>

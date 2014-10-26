@@ -8,6 +8,7 @@
 
 <% post.comments.forEach(function(comment) {%>
 	<div class="comment">
+		<a href="/u/<%= post.name %>"><img src="<%= post.avatar %>" class="c-avatar" /></a>
 		<p><a href="/u/<%= comment.name %>"><%= comment.name %></a>
 		<span class="info"><%= comment.time %></span></p>
 		<p><%- comment.content%></p>

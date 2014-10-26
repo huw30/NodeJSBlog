@@ -6,9 +6,6 @@
 	<link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-	<header>
-		<h1><%= title %></h1>
-	</header>
 
 	<nav>
 		<span><a title="home" href="/">Home</a></span>
@@ -24,6 +21,9 @@
 	</nav>
 
 	<article>
+		<header>
+			<h1><%= title %></h1>
+		</header>
 		<% if (success) { %>
 			<div><%= success %></div>
 		<% } %>

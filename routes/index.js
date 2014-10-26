@@ -122,9 +122,11 @@ module.exports = function(app) {
   app.post('/post', checkNotLogin);
   app.post('/post', function(req, res) {
     var currentUser = req.session.user;
+    console.log(currentUser.avatar);
     var tags = [req.body.tag1, req.body.tag2, req.body.tag3];
     var newPost = new Post({
       name: currentUser.name,
+      avatar: currentUser.avatar,
       title: req.body.title,
       content: req.body.content,
       tags: tags
@@ -251,20 +253,22 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/u/:name/:title/:day', checkNotLogin);
+  // app.get('/u/:name/:title/:day', checkNotLogin);
   app.get('/u/:name/:title/:day', function(req, res) {
     Post.getOne(req.params.name, req.params.title, req.params.day, false, function(err, post) {
       if (err) {
         req.flash('error', err); 
         return res.redirect('/');
       }
-      res.render('article', {
-        title: post.title,
-        post: post,
-        user: req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
-      });
+      if (post) {
+        res.render('article', {
+          title: post.title,
+          post: post,
+          user: req.session.user,
+          success: req.flash('success').toString(),
+          error: req.flash('error').toString()
+        });
+      }
     });
   });
 
