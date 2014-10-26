@@ -206,29 +206,29 @@ module.exports = function(app) {
     res.redirect('/');
   });
 
-  app.get('/upload', checkNotLogin);
-  app.get('/upload', function(req, res) {
-    res.render('upload', {
-      title: 'Upload Images',
-      user: req.session.user,
-      success: req.flash('success').toString(),
-      error: req.flash('error').toString()
-    });
-  });
+  // app.get('/upload', checkNotLogin);
+  // app.get('/upload', function(req, res) {
+  //   res.render('upload', {
+  //     title: 'Upload Images',
+  //     user: req.session.user,
+  //     success: req.flash('success').toString(),
+  //     error: req.flash('error').toString()
+  //   });
+  // });
 
-  app.post('/upload', checkNotLogin);
-  app.post('/upload', function(req, res) {
-    for(var i in req.files) {
-      if(req.files[i].size != 0) {
-        var path = './public/images/' + req.files[i].name;
-        fs.renameSync(req.files[i].path, path);
-      } else {
-        fs.unlinkSync(req.files[i].path);
-      }
-      req.flash('success', 'Upload successfully!');
-      res.redirect('/upload');
-    }
-  });
+  // app.post('/upload', checkNotLogin);
+  // app.post('/upload', function(req, res) {
+  //   for(var i in req.files) {
+  //     if(req.files[i].size != 0) {
+  //       var path = './public/images/' + req.files[i].name;
+  //       fs.renameSync(req.files[i].path, path);
+  //     } else {
+  //       fs.unlinkSync(req.files[i].path);
+  //     }
+  //     req.flash('success', 'Upload successfully!');
+  //     res.redirect('/upload');
+  //   }
+  // });
 
   app.get('/u/:name', function(req, res) {
     var page = req.query.p ? parseInt(req.query.p) : 1;
