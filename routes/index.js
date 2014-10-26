@@ -17,6 +17,7 @@ module.exports = function(app) {
       }
       res.render('index', {
         title: 'Home',
+        moment: moment,
         posts: posts,
         page: page,
         isFirstPage: (page - 1) == 0,
@@ -166,6 +167,7 @@ module.exports = function(app) {
       res.render('tag', {
         title: 'TAG:' + req.params.tag,
         posts: posts,
+        moment: moment,
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
@@ -184,6 +186,7 @@ module.exports = function(app) {
       res.render('search', {
         title: 'Search For:' + req.query.search,
         posts: posts,
+        moment: moment,
         user: req.session.user,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
@@ -243,6 +246,7 @@ module.exports = function(app) {
           title: 'User ' + user.name,
           posts: posts,
           page: page,
+          moment: moment,
           isFirstPage: (page - 1) == 0,
           isLastPage: ((page - 1) * 10 + posts.length) == total,
           user: req.session.user,
@@ -264,6 +268,7 @@ module.exports = function(app) {
         res.render('article', {
           title: post.title,
           post: post,
+          moment: moment,
           user: req.session.user,
           success: req.flash('success').toString(),
           error: req.flash('error').toString()
@@ -274,8 +279,7 @@ module.exports = function(app) {
 
   app.post('/u/:name/:title/:day', checkNotLogin);
   app.post('/u/:name/:title/:day', function(req, res) {
-    var date = new Date(),
-        time = moment(date).format('YYYY-MM-DD HH:mm'),
+    var time = moment.utc().format('YYYY-MM-DD HH:mm'),
         currentUser = req.session.user;
     var comment = {
       name: req.body.name,

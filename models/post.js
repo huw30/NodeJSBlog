@@ -16,13 +16,13 @@ function Post(post) {
 }
 
 Post.prototype.save = function(callback) {
-  var date = new Date();
+  var date = moment.utc().toDate();
   var time = {
     date: date,
     year: moment(date).year(),
     month: moment(date).format('YYYY-MM'),
     day: moment(date).format('YYYY-MM-DD'),
-    minute: moment(date).format('YYYY-MM-DD HH:mm')
+    minute: moment.utc().format('YYYY-MM-DD HH:mm')
   };
   var post = {
     name: this.name,

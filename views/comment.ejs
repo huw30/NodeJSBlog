@@ -10,7 +10,7 @@
 	<div class="comment">
 		<a href="/u/<%= post.name %>"><img src="<%= comment.avatar %>" class="c-avatar" /></a>
 		<p><a href="/u/<%= comment.name %>"><%= comment.name %></a>
-		<span class="info"><%= comment.time %></span></p>
+		<span class="info"><%= moment(moment.utc(comment.time).toDate()).format("YYYY-MM-DD HH:mm") %></span></p>
 		<p><%- comment.content%></p>
 	</div>
 <%});%>

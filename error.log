@@ -1,0 +1,12 @@
+[Sun Oct 26 2014 14:02:14 GMT-0400 (EDT)] /u/raina/Test/2014-10-26?view=true
+TypeError: Cannot read property 'avatar' of undefined
+    at /Users/huanwang/src/blog/routes/index.js:287:26
+    at callbacks (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:164:37)
+    at param (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:138:11)
+    at param (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:135:11)
+    at param (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:135:11)
+    at param (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:135:11)
+    at pass (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:145:5)
+    at nextRoute (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:100:7)
+    at callbacks (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:167:11)
+    at checkNotLogin (/Users/huanwang/src/blog/routes/index.js:363:5)
