@@ -10,3 +10,15 @@ TypeError: Cannot read property 'avatar' of undefined
     at nextRoute (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:100:7)
     at callbacks (/Users/huanwang/src/blog/node_modules/express/lib/router/index.js:167:11)
     at checkNotLogin (/Users/huanwang/src/blog/routes/index.js:363:5)
+[Sun Oct 26 2014 15:55:34 GMT-0400 (EDT)] /upload
+Error: Can't set headers after they are sent.
+    at ServerResponse.OutgoingMessage.setHeader (http.js:689:11)
+    at ServerResponse.res.setHeader (/Users/huanwang/src/blog/node_modules/express/node_modules/connect/lib/patch.js:134:22)
+    at ServerResponse.res.set.res.header (/Users/huanwang/src/blog/node_modules/express/lib/response.js:583:10)
+    at ServerResponse.res.send (/Users/huanwang/src/blog/node_modules/express/lib/response.js:144:12)
+    at fn (/Users/huanwang/src/blog/node_modules/express/lib/response.js:829:10)
+    at View.exports.renderFile [as engine] (/Users/huanwang/src/blog/node_modules/ejs/lib/ejs.js:323:3)
+    at View.render (/Users/huanwang/src/blog/node_modules/express/lib/view.js:76:8)
+    at Function.app.render (/Users/huanwang/src/blog/node_modules/express/lib/application.js:523:10)
+    at ServerResponse.res.render (/Users/huanwang/src/blog/node_modules/express/lib/response.js:833:7)
+    at /Users/huanwang/src/blog/routes/index.js:211:9
