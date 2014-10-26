@@ -275,9 +275,11 @@ module.exports = function(app) {
   app.post('/u/:name/:title/:day', checkNotLogin);
   app.post('/u/:name/:title/:day', function(req, res) {
     var date = new Date(),
-        time = moment(date).format('YYYY-MM-DD HH:mm');
+        time = moment(date).format('YYYY-MM-DD HH:mm'),
+        currentUser = req.session.user;
     var comment = {
       name: req.body.name,
+      avatar: currentUser.avatar,
       title: req.body.title,
       content: req.body.content,
       time: time
