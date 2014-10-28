@@ -1,3 +1,4 @@
+@import 'utils/font';
 * {
   padding: 0;
   margin: 0;
@@ -7,10 +8,8 @@
 html, body {
   width: 100%;
   height: 100%;
-/*  margin: 2em auto;
-  padding: 0 2em;*/
   font-size: 14px;
-  font-family: "Microsoft YaHei";
+  font-family: "GeometriaLight", sans-serif;
 }
 
 p {
@@ -18,38 +17,79 @@ p {
   margin: 1em 0;
 }
 
-header {
-  padding: .5em 0;
-  border-bottom: 1px solid #cccccc;
+a {
+  text-decoration: none;
 }
+
+// header {
+//   padding: .5em 0;
+//   border-bottom: 1px solid #cccccc;
+// }
 
 nav {
-  font-family: "Microsoft YaHei";
-  font-size: 1.1em;
-  text-transform: uppercase;
-  width: 9em;
-  text-align: right;
-  width: 20%;
-  float: left;
-  margin-right: 10%;
-  margin-top: 85px;
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  background-color: rgba(255,255,255,0.95);
+  border-bottom: 1px solid #a3a3a3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  vertical-align: middle; 
+  .logo {
+    display: inline-block;
+    span {
+      display: inline-block;   
+      height: 40px;
+      width: 40px;
+      background: url('images/heart.ico'); 
+      background-size: 100%;
+    }
+    a {
+      margin-left: 45px;
+      font-size: 30px;
+      font-weight: bold;
+      color: #a3a3a3;
+    }
+  }
+  div.items {
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    height: 60px;
+    span {
+      height: 60px;
+      display: inline-block;
+      padding: 20px;
+      &:hover {
+        background-color: #ef4036;
+        a {
+          color: #fff;
+        }
+      }
+    }
+  }
 }
 
-nav a {
-  display: block;
-  text-decoration: none;
-  padding: .7em 1em;
-  color: #000000;
-}
+// nav a {
+//   display: block;
+//   text-decoration: none;
+//   padding: .7em 1em;
+//   color: #000000;
+// }
 
-nav a:hover {
-  background-color: #ff0000;
-  color: #f9f9f9;
-  -webkit-transition: color .2s linear;
-}
+// nav a:hover {
+//   background-color: #ff0000;
+//   color: #f9f9f9;
+//   -webkit-transition: color .2s linear;
+// }
 
 article {
+  display: block;
   font-size: 16px;
+  margin-top: 60px;
   padding: 30px;
   width: 70%;
   float: left;
@@ -177,4 +217,5 @@ div.error a {
   margin-top:-2.5em;
   box-shadow:0px 1px 4px #888;
 }
+
 

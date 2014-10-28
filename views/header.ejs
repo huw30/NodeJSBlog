@@ -6,17 +6,20 @@
 	<link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-
 	<nav>
-		<span><a title="home" href="/">Home</a></span>
-		<% if (user) { %>
-			<span><a title="tag" href="/tags">Tags</a></span>
-			<span><a title="post" href="/post">Post</a></span>
-			<span><a title="logout" href="/logout">Logout</a></span>
-		<% } else { %>
-			<span><a title="login" href="/login">Login</a></span>
-			<span><a title="register" href="/register">Register</a></span>
-		<% } %>
+		<div class="logo">
+		<span><a title="home" href="/">Hapy</a></span>
+		</div>
+		<div class="items">
+			<% if (user) { %>
+				<span><a title="tag" href="/tags">Tags</a></span>
+				<span><a title="post" href="/post">Post</a></span>
+				<span><a title="logout" href="/logout">Logout</a></span>
+			<% } else { %>
+				<span><a title="login" href="/login">Login</a></span>
+				<span><a title="register" href="/register">Register</a></span>
+			<% } %>
+		</div>
 	</nav>
 
 	<article>
