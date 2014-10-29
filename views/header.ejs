@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Blog</title>
+	<title><%= title %></title>
 	<link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
@@ -23,9 +23,6 @@
 	</nav>
 
 	<article>
-		<header>
-			<h1><%= title %></h1>
-		</header>
 		<% if (success) { %>
 			<div><%= success %></div>
 		<% } %>

@@ -57,17 +57,29 @@ nav {
       height: 60px;
       display: inline-block;
       padding: 20px; }
+      nav div.items span a {
+        color: #000; }
       nav div.items span:hover {
         background-color: #ef4036; }
         nav div.items span:hover a {
           color: #fff; }
 
+div.welcome {
+  height: 500px;
+  width: 100%;
+  background-color: #006681; }
+  div.welcome span.sheep {
+    display: inline-block;
+    background: url('images/sheep.png');
+    height: 200px;
+    width: 200px;
+    background-size: 100%; }
+
 article {
   display: block;
   font-size: 16px;
   margin-top: 60px;
-  padding: 30px;
-  width: 70%;
+  width: 100%;
   float: left; }
 
 article a {
