@@ -1,0 +1,126 @@
+/* Index */
+div.welcome {
+  height: 500px;
+  width: 100%;
+  background-color: #B5CBBB;
+  overflow: hidden;
+  .pictures {
+    display: inline-block;
+    position: relative;
+    height: 500px;
+    width: 700px;
+    margin-right: 10%;
+    float: left;
+    span.sheep {
+      position: absolute;
+      top: 220px;
+      left: 150px;
+      display: inline-block;
+      background: url('images/sheep.png');
+      height: 200px;
+      width: 200px;
+      background-size: 100%;
+     -webkit-animation-name: hop;
+     -webkit-animation-duration: 1s;
+     -webkit-animation-iteration-count: infinite;
+     -webkit-animation-direction: alternate;
+    }
+    span.cloud-1 {
+      position: absolute;
+      top: 60px;
+      right: 100px;
+      display: inline-block;
+      background: url('images/cloud-1.png') no-repeat;
+      height: 200px;
+      width: 200px;
+      background-size: 100%;
+     -webkit-animation-name: move-lr;
+     -webkit-animation-duration: 1s;
+     -webkit-animation-iteration-count: infinite;
+     -webkit-animation-direction: alternate;
+    }
+    span.cloud-2 {
+      position: absolute;
+      top: 200px;
+      right: 0;
+      display: inline-block;
+      background: url('images/cloud-2.png') no-repeat;
+      height: 200px;
+      width: 200px;
+      background-size: 100%;
+     -webkit-animation-name: move-lr;
+     -webkit-animation-duration: 1s;
+     -webkit-animation-iteration-count: infinite;
+     -webkit-animation-direction: alternate;
+    }
+    span.sun {
+      position: absolute;
+      top: 20px;
+      left: 100px;
+      display: inline-block;
+      background: url('images/sun.png') no-repeat;
+      height: 200px;
+      width: 200px;
+      background-size: 100%;
+     -webkit-animation-name: move-top;
+     -webkit-animation-duration: 1s;
+     -webkit-animation-iteration-count: infinite;
+     -webkit-animation-direction: alternate;
+    }
+  }
+
+  div.welcome-content {
+    display: inline-block;
+    float: left;
+    margin-top: 250px;
+    h2, p {
+      color: #fff;
+    }
+  }
+}
+
+@-webkit-keyframes hop {
+  25% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+
+  15%, 50% {
+    -webkit-transform: rotateX(20deg);
+    transform: rotateX(20deg);
+  }
+
+  75% {
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@-webkit-keyframes move-lr {
+  0% {
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+
+  50% {
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+}
+
+@-webkit-keyframes move-top {
+  0% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+
+  50% {
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px);
+  }
+}
+
+div.home-content {
+  padding: 20px;
+}
+
