@@ -1,31 +1,33 @@
 <%- include header%>
 <%- include welcome%>
-<% if (posts.length > 0) {%>
-	<form method="get" action="/search">
-		<input type="text" name="search" class="search"/>
-		<input type="submit" value="Search" />
-	</form>
-<% } %>
-<% posts.forEach(function(post, index) { %>
-	<p>
-		<h2>
-			<a href="/u/<%= post.name %>/<%= post.title%>/<%= post.time.day %>?view=true"><%= post.title %>
-			</a>
-		</h2>
-		<a href="/u/<%= post.name %>"><img src="<%= post.avatar %>" class="p-avatar" /></a>
-	</p>
-	<p class="info">
-		Author: <a href="/u/<%= post.name %>"><%= post.name %></a> |
-		Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %>
-		<% post.tags.forEach(function (tag, index) { %>
-			<% if (tag) { %>
-				<a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
-			<% } %>
-		<% }); %>
-	</p>
-	<p><%- post.content%></p>
-<% }); %>
-<% if (posts.length > 0) {%>
-	<%- include paging %>
-<% } %>
+<div class="home-content">
+	<% if (posts.length > 0) {%>
+		<form method="get" action="/search">
+			<input type="text" name="search" class="search"/>
+			<input type="submit" value="Search" />
+		</form>
+	<% } %>
+	<% posts.forEach(function(post, index) { %>
+		<p>
+			<h2>
+				<a href="/u/<%= post.name %>/<%= post.title%>/<%= post.time.day %>?view=true"><%= post.title %>
+				</a>
+			</h2>
+			<a href="/u/<%= post.name %>"><img src="<%= post.avatar %>" class="p-avatar" /></a>
+		</p>
+		<p class="info">
+			Author: <a href="/u/<%= post.name %>"><%= post.name %></a> |
+			Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %>
+			<% post.tags.forEach(function (tag, index) { %>
+				<% if (tag) { %>
+					<a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
+				<% } %>
+			<% }); %>
+		</p>
+		<p><%- post.content%></p>
+	<% }); %>
+	<% if (posts.length > 0) {%>
+		<%- include paging %>
+	<% } %>
+</div>
 <%- include footer%>

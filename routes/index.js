@@ -174,12 +174,12 @@ module.exports = function(app) {
       });
     })
     .fail(function(err) {
-      req.flash('error',err); 
+      req.flash('error',err);
       return res.redirect('/');
     });
   });
 
-  app.get('/search', checkNotLogin);
+  // app.get('/search', checkNotLogin);
   app.get('/search', function (req, res) {
     Post.search(req.query.search)
     .then(function(posts) {
