@@ -179,7 +179,7 @@ nav {
       display: inline-block;
       height: 40px;
       width: 40px;
-      background: url('images/heart.ico');
+      background: url('images/heart.ico') no-repeat;
       background-size: 100%; }
     nav .logo a {
       margin-left: 45px;
@@ -381,8 +381,7 @@ div.error a {
 
 .form {
   position: relative;
-  height: 600px;
-  text-align: center; }
+  height: 600px; }
   .form input[type=text], .form input[type=password], .form input[type=email] {
     outline: none;
     display: inline-block;
