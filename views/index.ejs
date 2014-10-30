@@ -7,7 +7,7 @@
 			<input type="submit" value="Search" />
 		</form>
 	<% } %>
-	<div class="post-list">
+	<div class="container">
 		<% posts.forEach(function(post, index) { %>
 		<div class="post-item">
 			<a href="/u/<%= post.name %>" class="p-avatar"><img src="<%= post.avatar %>" /></a>
@@ -18,7 +18,8 @@
 				</h2>
 				<p class="info">
 					Author: <a href="/u/<%= post.name %>"><%= post.name %></a> |
-					Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %>
+					Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %> |
+					Tags:
 					<% post.tags.forEach(function (tag, index) { %>
 						<% if (tag) { %>
 							<a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
@@ -26,7 +27,7 @@
 					<% }); %>
 				</p>
 			</div>
-			<div class="post-content"><%- post.content%></div>
+			<div><%- post.content%></div>
 		</div>
 		<% }); %>
 		<% if (posts.length > 0) {%>

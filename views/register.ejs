@@ -1,9 +1,28 @@
 <%- include header%>
-<form method="post">
-	Name: <input type="text" name="name" /> <br/>
-	Password: <input type="password" name="password" /> <br/>
-	Confirm Password: <input type="password" name="password-repeat" /> <br/>
-	Email: <input type="email" name="email"> <br/>
-	<input type="submit" value="Register" />
-</form>
+<div class="container">
+	<header>
+		<%= title %>
+	</header>
+	<form method="post" class="form">
+		<div>
+			<span class="label">Name:</span>
+			<input type="text" name="name" />
+		</div>
+		<div>
+			<span class="label">Password:</span>
+			<input type="password" name="password" />
+		</div>
+		<div>
+			<span class="label">Confirm:</span>
+			<input type="password" name="password-repeat" />
+		</div>
+		<div>
+			<span class="label">Email:</span>
+			<input type="email" name="email">
+		</div>
+		<div>
+			<input type="submit" value="Register" class="submit"/>
+		</div>
+	</form>
+</div>
 <%- include footer%>

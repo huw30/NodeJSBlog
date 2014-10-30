@@ -1,8 +1,8 @@
 <%- include header%>
-<header>
-	<%= title %>
-</header>
-<div class="post-list">
+<div class="container">
+	<header>
+		<%= title %>
+	</header>
 	<% posts.forEach(function(post, index) { %>
 	<div class="post-item">
 		<a href="/u/<%= post.name %>" class="p-avatar"><img src="<%= post.avatar %>" /></a>
@@ -13,7 +13,8 @@
 			</h2>
 			<p class="info">
 				Author: <a href="/u/<%= post.name %>"><%= post.name %></a> |
-				Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %>
+				Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %> |
+				Tags:
 				<% post.tags.forEach(function (tag, index) { %>
 					<% if (tag) { %>
 						<a class="tag" href="/tags/<%= tag %>"><%= tag %></a>

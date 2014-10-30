@@ -1,11 +1,26 @@
 <%- include header%>
-<form method="post">
-	Title:  <br />
-	<input type="text" name="title" /> <br />
-	Tags: <br />
-	<input type="text" name="tag1" /><input type="text" name="tag2" /><input type="text" name="tag3" /> <br />
-	Content:  <br />
-	<textarea name="content" cols="100" rows="20"></textarea> <br />
-	<input type="submit" value="Post" />
-</form>
+<div class="container">
+	<header>
+		<%= title %>
+	</header>
+	<form method="post" class="post-form">
+		<div>
+			<span class="label">Title:</span>
+			<input type="text" name="title" class="title-form"/>
+		</div>
+		<div>
+			<span class="label">Tags:</span>
+			<input class="tag-form" type="text" name="tag1" />
+			<input class="tag-form" type="text" name="tag2" />
+			<input class="tag-form" type="text" name="tag3" />
+		</div>
+		<div>
+		<span class="label l-content">Content:</span>
+		<textarea name="content" rows="20"></textarea>
+		</div>
+		<div class="middle">
+			<input type="submit" value="Post" class="submit" />
+		</div>
+	</form>
+</div>
 <%- include footer%>

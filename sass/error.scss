@@ -1,0 +1,40 @@
+
+div.error img {
+  height: 400px;
+  position: absolute;
+  top: 200px;
+  left: 100px;
+}
+div.error {
+  position: relative;
+  height: 100%;
+  background: #ffd8c3;
+}
+
+div.error h1 {
+  position: absolute;
+  top: 320px;
+  left: 700px;
+}
+
+div.error p {
+  position: absolute;
+  top: 360px;
+  left: 700px;
+}
+
+div.error a {
+  position: absolute;
+  top: 420px;
+  left: 700px;
+  text-decoration: none;
+  height: 38px;
+  width: 108px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  line-height: 35px;
+  text-align: center;
+  color: white;
+  background: #cccccc;
+}

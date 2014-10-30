@@ -1,16 +1,21 @@
-<form method="post">
+<form method="post" class="form-comment">
 	<input type="hidden" name="name" value="<%= user.name%>" />
 	<input type="hidden" name="title" value="<%= post.title%>" />
 	<input type="hidden" name="day" value="<%= post.time.day%>" />
-	<textarea name="content" cols="100" rows="10"></textarea> <br />
-	<input type="submit" value="Comment" />
+	<textarea class="comment-content" name="content" rows="10"></textarea>
+	<div class="middle">
+		<input type="submit" value="Comment" class="submit"/>
+	</div>
 </form>
 
 <% post.comments.forEach(function(comment) {%>
 	<div class="comment">
-		<a href="/u/<%= post.name %>"><img src="<%= comment.avatar %>" class="c-avatar" /></a>
-		<p><a href="/u/<%= comment.name %>"><%= comment.name %></a>
-		<span class="info"><%= moment(moment.utc(comment.time).toDate()).format("YYYY-MM-DD HH:mm") %></span></p>
-		<p><%- comment.content%></p>
+		<a href="/u/<%= post.name %>" class="p-avatar"><img src="<%= comment.avatar %>"/></a>
+		<div class="comment-info">
+			<a href="/u/<%= comment.name %>"><%= comment.name %></a>
+			<span class="info"><%= moment(moment.utc(comment.time).toDate()).format("YYYY-MM-DD HH:mm") %></span>
+		</div>
+		<div class="c-comment"><%- comment.content%></div>
 	</div>
 <%});%>
+

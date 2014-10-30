@@ -1,5 +1,12 @@
 <%- include header %>
-<% tags.forEach(function (tag, index) { %>
-  <a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
-<% }) %>
+<div class="container">
+	<header>
+		<%= title %>
+	</header>
+	<% tags.forEach(function (tag, index) { %>
+		<% if (tag) {%>
+		  <a class="tag tags" href="/tags/<%= tag %>"><%= tag %></a>
+		<% } %>
+	<% }) %>
+</div>
 <%- include footer %>

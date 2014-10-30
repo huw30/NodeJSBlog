@@ -1,14 +1,20 @@
 <%- include header %>
-<% posts.forEach(function (post, index) { %>
-  <p><h2><a href="/u/<%= post.name %>/<%= post.title%>/<%= post.time.day %>"><%= post.title %></a></h2></p>
-	<p class="info">
-		Author: <a href="/u/<%= post.name %>"><%= post.name %></a> |
-		Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %>
-		<% post.tags.forEach(function (tag, index) { %>
-			<% if (tag) { %>
-				<a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
-			<% } %>
-		<% }); %>
-	</p>
-<% }) %>
+<div class="container">
+	<header>
+		<%= title %>
+	</header>
+	<% posts.forEach(function (post, index) { %>
+	  <p><h2><a href="/u/<%= post.name %>/<%= post.title%>/<%= post.time.day %>"><%= post.title %></a></h2></p>
+		<p class="info">
+			Author: <a href="/u/<%= post.name %>"><%= post.name %></a> |
+			Date: <%= moment(moment.utc(post.time.minute).toDate()).format("YYYY-MM-DD HH:mm") %> |
+			Tags:
+			<% post.tags.forEach(function (tag, index) { %>
+				<% if (tag) { %>
+					<a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
+				<% } %>
+			<% }); %>
+		</p>
+	<% }) %>
+</div>
 <%- include footer %>

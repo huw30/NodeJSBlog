@@ -10,6 +10,12 @@
 		<div class="logo">
 		<span><a title="home" href="/">Hapy</a></span>
 		</div>
+		<% if (success) { %>
+			<div class="alert"><%= success %></div>
+		<% } %>
+		<% if (error) { %>
+			<div class="alert"><%= error %> </div>
+		<% } %>
 		<div class="items">
 			<% if (user) { %>
 				<span><a title="tag" href="/tags">Tags</a></span>
@@ -23,9 +29,3 @@
 	</nav>
 
 	<article>
-		<% if (success) { %>
-			<div><%= success %></div>
-		<% } %>
-		<% if (error) { %>
-			<div><%= error %> </div>
-		<% } %>
