@@ -16,12 +16,15 @@ var MongoStore = require('connect-mongo')(express);
 var settings = require('./settings');
 var flash = require('connect-flash');
 
+console.log(__dirname);
+
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(flash());
-app.use(express.favicon(__dirname + '/stylesheets/images/heart.ico'));
+app.use(express.favicon(__dirname + '/public/images/heart.ico'));
 app.use(express.logger('dev'));
 app.use(express.logger({stream: accessLog}));
 app.use(express.bodyParser({ keepExtensions: true, uploadDir: './public/images'}));
@@ -33,7 +36,7 @@ app.use(express.session({
   url: settings.url
 }));
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(function (err, req, res, next) {
   var meta = '[' + new Date() + '] ' + req.url + '\n';
   errorLog.write(meta + err.stack + '\n');
