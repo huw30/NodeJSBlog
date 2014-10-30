@@ -12,7 +12,3 @@
 `/logout`
 
 
-#####Bugs: 
-
-+Post.time is UTC time. Have to be customized to local time. 
-
